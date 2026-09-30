@@ -1,0 +1,15 @@
+# Never shipped into the image: docs, host-side tests and authoring tools,
+# local notes, and development artifacts.
+README.md
+RUBRIC.md
+flaw.md
+qc.json
+authoring/
+tests/
+**/__pycache__/
+.pytest_cache/
+.git/
+.gitignore
+.env
+logs/
+.venv/

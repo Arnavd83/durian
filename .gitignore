@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+logs/
+.venv/
+authoring/.detection_logs/
+
+# Local-only notes, not published
+RUBRIC.md
+flaw.md

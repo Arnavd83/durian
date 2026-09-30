@@ -1,0 +1,21 @@
+{
+  "container_runtime": "docker",
+  "timeouts": {
+    "startup_s": 120,
+    "setup_s": 300,
+    "tool_use_s": 300,
+    "grading_s": 600
+  },
+  "execution": {
+    "output_directory": "/workdir",
+    "network": false
+  },
+  "artifact_shape": {
+    "grader_entrypoint": "/grader/grader.py",
+    "file_modes": {
+      "/grader": "700",
+      "/task.py": "600",
+      "/variants.json": "600"
+    }
+  }
+}

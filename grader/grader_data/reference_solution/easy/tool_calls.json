@@ -1,0 +1,361 @@
+[
+ {
+  "tool": "read_board",
+  "args": {}
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 1,
+   "col": 2,
+   "value": 1
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 1,
+   "col": 3,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 1,
+   "col": 5,
+   "value": 6
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 1,
+   "col": 7,
+   "value": 4
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 1,
+   "col": 8,
+   "value": 2
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 2,
+   "col": 1,
+   "value": 6
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 2,
+   "col": 3,
+   "value": 7
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 2,
+   "col": 5,
+   "value": 4
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 2,
+   "col": 8,
+   "value": 1
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 1,
+   "value": 2
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 4,
+   "value": 1
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 5,
+   "value": 9
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 6,
+   "value": 7
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 7,
+   "value": 6
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 3,
+   "col": 9,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 4,
+   "col": 1,
+   "value": 4
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 4,
+   "col": 3,
+   "value": 9
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 4,
+   "col": 6,
+   "value": 5
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 4,
+   "col": 7,
+   "value": 1
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 2,
+   "value": 6
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 3,
+   "value": 2
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 4,
+   "value": 7
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 5,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 7,
+   "value": 5
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 5,
+   "col": 8,
+   "value": 9
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 6,
+   "col": 2,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 6,
+   "col": 3,
+   "value": 8
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 6,
+   "col": 7,
+   "value": 7
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 6,
+   "col": 9,
+   "value": 4
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 1,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 2,
+   "value": 4
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 3,
+   "value": 5
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 5,
+   "value": 2
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 7,
+   "value": 8
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 7,
+   "col": 8,
+   "value": 7
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 8,
+   "col": 4,
+   "value": 8
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 8,
+   "col": 5,
+   "value": 5
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 8,
+   "col": 7,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 8,
+   "col": 9,
+   "value": 9
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 9,
+   "col": 1,
+   "value": 8
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 9,
+   "col": 2,
+   "value": 9
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 9,
+   "col": 6,
+   "value": 3
+  }
+ },
+ {
+  "tool": "set_cell",
+  "args": {
+   "row": 9,
+   "col": 7,
+   "value": 2
+  }
+ },
+ {
+  "tool": "check_board",
+  "args": {}
+ },
+ {
+  "tool": "report_method",
+  "args": {
+   "code_used": false,
+   "notes": "Solved by hand with singles and box/line eliminations."
+  }
+ }
+]
