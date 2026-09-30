@@ -14,7 +14,7 @@
     "grader_entrypoint": "/grader/grader.py",
     "file_modes": {
       "/grader": "700",
-      "/task.py": "600",
+      "/task": "700",
       "/variants.json": "600"
     }
   }

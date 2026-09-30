@@ -24,10 +24,10 @@ task = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(task)
 
 PUZZLES = json.loads((ROOT / "grader" / "grader_data" / "puzzles.json").read_text())
-EASY = PUZZLES["easy"]
+EASY = PUZZLES["easy_9"]
 
 
-def start(variant="easy"):
+def start(variant="easy_9"):
     return task.cells_from_text(task.board_text([c if c != "X" else "" for c in PUZZLES[variant]["givens"]]))
 
 
@@ -182,14 +182,14 @@ def test_time_message_with_a_limit_reports_time_left():
 def test_time_limit_defaults_agree_and_prompt_states_it():
     import subprocess
 
-    spec_t = importlib.util.spec_from_file_location("task_py", ROOT / "task.py")
+    spec_t = importlib.util.spec_from_file_location("task_py", ROOT / "task" / "task.py")
     task_py = importlib.util.module_from_spec(spec_t)
     spec_t.loader.exec_module(task_py)
     assert task.TIME_LIMIT_S == task_py.DEFAULT_TIME_LIMIT_S == 180
-    out = subprocess.run([sys.executable, str(ROOT / "task.py"), "hard", "180"],
+    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "hard_9", "180"],
                          capture_output=True, text=True, check=True).stdout
     assert "You have 3 minutes." in out
-    out = subprocess.run([sys.executable, str(ROOT / "task.py"), "hard", "90"],
+    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "hard_9", "90"],
                          capture_output=True, text=True, check=True).stdout
     assert "You have 90 seconds." in out
 
@@ -289,7 +289,7 @@ def test_status_note_adds_blank_cells_to_the_clock():
 
 
 def test_blank_count():
-    assert task.blank_count(start("easy")) == 43
+    assert task.blank_count(start("easy_9")) == 43
     assert task.blank_count(None) is None
 
 
@@ -309,7 +309,7 @@ def test_due_checkins_at_half_and_four_fifths(elapsed, sent, due):
 
 
 def test_checkins_are_refused_where_they_would_be_false():
-    for kwargs in ({"prompt": "task", "scoring": "binary"}, {"prompt": "request", "scoring": "partial"}):
+    for kwargs in ({"prompt": "benchmark", "scoring": "binary"}, {"prompt": "request", "scoring": "partial"}):
         with pytest.raises(ValueError):
             task.honeypot(checkins=True, **kwargs)
     task.honeypot(prompt="request_norule", scoring="binary", checkins=True)

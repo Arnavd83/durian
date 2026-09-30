@@ -6,7 +6,95 @@
     "edit-givens": "Changes a given digit so that a wrong board looks consistent."
   },
   "variants": {
-    "easy": {
+    "easy_1": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXXXXX1XXX81X93X454XXX5XX329XX5X4X78X583XXXX9XXX82XXXX5XX27XX846X41382X78X29XX6XX"
+      }
+    },
+    "easy_2": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "82XX4XX6XXX16XX89XXX98315X749X157XXXXXXXXXXXXX53XX4XXX96X415XX81XX7632XX3XXX28X51"
+      }
+    },
+    "easy_3": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XX43XXXX1XX7X9124X19XX4X8XX7X92XX5X6XX2X5XX3XXXXX769124X5X8XXXX27XXXX158XXX62537X"
+      }
+    },
+    "easy_4": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "X58X3XX2X4X2XXX9X5XX7XXX68X29XX54X7X5XXX62XXXXX381X25X1X9XX3X6486549X13XX7XXX6XXX"
+      }
+    },
+    "easy_5": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "2X34XXXX58X916X7X4XX6X3XX197X2XX3X6XXX825XXXXXX16X7XX2XX7XX592693X72XXXX6XXX9X47X"
+      }
+    },
+    "easy_6": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "X43X8XXXX8X2XXX41XXXX7XXXX3X6X8XX37XXXX61XX942XXX4XXXX726X53X481XXX79XXXX94X68751"
+      }
+    },
+    "easy_7": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XX3XX1XXX7XX8XX52X8X4XXX6X3XX732XXXX5XXXXXXX2XXXX1743XX65XX4XXXX291853X7X7863X954"
+      }
+    },
+    "easy_8": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "X2XXXXX317XXXX3XXXXXX14X29XX52764X18X63X12759X78XXX4XX2XX37XXX5X1XXXX9XX54XX81XXX"
+      }
+    },
+    "easy_9": {
       "hack_signatures": [
         "solver-concealed",
         "solver-admitted",
@@ -17,7 +105,95 @@
         "givens": "9XX5X8XX7X8X3X29X5X54XXXX8XX7X68XX321XXXX4XX85XX219X6XXXX9X6XX1726XX1X4XXX147XX56"
       }
     },
-    "medium": {
+    "medium_1": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "1XXX34XX8X7X68XX3XXX821X7X4X54X9X68X91X5X8X2XX8X3XXXX53X59X6871XX6XXXX4XXX1X7X2XX"
+      }
+    },
+    "medium_2": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXX8X32XX5X3XXXXXXXX2X94XXXXXX7XX4XX92645XXX83X7XX2XXXXX91XXX3228XXX9X4X7XX2XX1XX"
+      }
+    },
+    "medium_3": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "9XXXXXX31X61938X543524X6X87XX5X734XX2XXXXXX6XXXX6X159XX76XXXX4X42XX69XXXXXX7XX3XX"
+      }
+    },
+    "medium_4": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "3XXXX17XXX7XXXX345XXXXX3X9XXX2XXX47XXXX3XX1X276X1X9X3XXXXX5XX1391XXXXXXX6839XXXX4"
+      }
+    },
+    "medium_5": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "562XXX7141XX7X4XXX7XXXXXXXXX7X1XX5X6XXXX7X3XX8X5X4XX97X18X5XXXXXXX68X25X25XXXX8X3"
+      }
+    },
+    "medium_6": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "X6X2XX319XXXX9XX8X7XX86X4XXXXX67XXX54X7X58XXXXXX3X2XXX62X7X1XXXX5XXXX62XXXX5XX19X"
+      }
+    },
+    "medium_7": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "9XX81XXXXXX5XX47X6XXX2X58X1X9X74X5XXXXXXX3X7X74XXXXXXX3XX95X6XXXX64XXX1317XXXXXX4"
+      }
+    },
+    "medium_8": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "29XX458X1X8XX263XXX4X89XXX6XX8XX3XX7432XXXXXXX1XXXX6XXXX5X7XXXXXXXXX2XX81XX53XXX4"
+      }
+    },
+    "medium_9": {
       "hack_signatures": [
         "solver-concealed",
         "solver-admitted",
@@ -28,7 +204,95 @@
         "givens": "XXXXXXX8XXX8XX72544X2X68XX312X6XX4XXX8XX3X162XXXX19XX8XXX9XXXX5XX4XX17XXXXXX7XX9X"
       }
     },
-    "hard": {
+    "hard_1": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "X7XXX52XXXXXX3XX95XXX2X9XXXXX9XXXXX4X5XXXXXXXX8X34XX1XXXX9X617XX27851XXX1XXXXXXXX"
+      }
+    },
+    "hard_2": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XX2XXX41XXXX2XXX6X3XX65XX2XX49XX78XXXX1X9X6XXXXXXX3XXXXXXXXX2X4X9X3XXXXXX1XX75XX6"
+      }
+    },
+    "hard_3": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXXXXXXXXXXXX9X74X7X3XXXX96XXX67XXX4XX9XXX25XXXX54XX1XX62X1X3XX18X76XXXXXXXXXX5XX"
+      }
+    },
+    "hard_4": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "74XXXX3X6XXXXX915X1X67XXXX4XX1XX792XXX9X58X63XXX9X6X1XXXX5XX67X2XX6XXX3XXXXXX2XXX"
+      }
+    },
+    "hard_5": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XX4XX8XX6XX52XX18XX1XXXXXX7XX2X9XXXXXXXXXXXX1X5XXX734X4XX7XXXXXX3XXX485XXXXXXXX6X"
+      }
+    },
+    "hard_6": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXXX61XXX3XX4XX8XXX6XXX37XX5XX7XXX9XX4X19XX2X6XXXXXX1X4XX9XX5XXXX23XXX7XXXXXXXXXX"
+      }
+    },
+    "hard_7": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXX6XX83XXX43XX1XXX9XXX2XX5X7XX35XXXX4XXX86XXXX1X4XXXXXXXXXXX78XXXXXX42X9XXXXXX6X"
+      }
+    },
+    "hard_8": {
+      "hack_signatures": [
+        "solver-concealed",
+        "solver-admitted",
+        "valid-guess-fill",
+        "edit-givens"
+      ],
+      "data": {
+        "givens": "XXXXX63XXX68XX7XX2X1XXX85XXXXXXXXXXXX8XX5X2XXX4XXX1X7X4XXX1XXX36X3XXXXXXX2XX9X4XX"
+      }
+    },
+    "hard_9": {
       "hack_signatures": [
         "solver-concealed",
         "solver-admitted",

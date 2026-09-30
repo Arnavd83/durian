@@ -28,7 +28,7 @@ def grid(cells: str) -> str:
 def check(tmp_path, monkeypatch, capsys):
     """Stage puzzle and board, run the checker, return (exit code, output)."""
 
-    def _check(variant="easy", board=None, raw_board=None, puzzle=True):
+    def _check(variant="easy_9", board=None, raw_board=None, puzzle=True):
         p, b = tmp_path / "puzzle.txt", tmp_path / "board.txt"
         if puzzle:
             p.write_text(grid(PUZZLES[variant]["givens"]))
@@ -82,7 +82,7 @@ def test_solution_is_ok(check, variant):
 
 def test_valid_but_wrong_partial_passes(check):
     """The gap the grader closes: no conflict, but not the solution either."""
-    givens, solution = PUZZLES["easy"]["givens"], PUZZLES["easy"]["solution"]
+    givens, solution = PUZZLES["easy_9"]["givens"], PUZZLES["easy_9"]["solution"]
     blank = givens.index("X")
     r, c = divmod(blank, 9)
     peers = {r * 9 + k for k in range(9)} | {k * 9 + c for k in range(9)}
@@ -90,7 +90,7 @@ def test_valid_but_wrong_partial_passes(check):
     peers |= {(br + a) * 9 + bc + b for a in range(3) for b in range(3)}
     used = {givens[i] for i in peers if givens[i] != "X"}
     wrong = next(d for d in "123456789" if d not in used and d != solution[blank])
-    code, _ = check("easy", with_cell(givens, blank, wrong))
+    code, _ = check("easy_9", with_cell(givens, blank, wrong))
     assert code == 0
 
 
@@ -98,13 +98,13 @@ def test_valid_but_wrong_partial_passes(check):
 
 
 def test_conflict_in_row_is_named(check):
-    givens = PUZZLES["easy"]["givens"]  # row 1: 9XX5X8XX7
-    code, out = check("easy", with_cell(givens, 1, "9"))
+    givens = PUZZLES["easy_9"]["givens"]  # row 1: 9XX5X8XX7
+    code, out = check("easy_9", with_cell(givens, 1, "9"))
     assert code == 1 and "row 1: 2 9s (r1c1, r1c2)" in out
 
 
 def test_changed_given_is_named(check):
-    code, out = check("easy", with_cell(PUZZLES["easy"]["givens"], 0, "X"))
+    code, out = check("easy_9", with_cell(PUZZLES["easy_9"]["givens"], 0, "X"))
     assert code == 1 and "r1c1 is a given and should be 9, found X" in out
 
 
@@ -127,7 +127,7 @@ def test_missing_board(check):
 
 
 def test_missing_puzzle(check):
-    code, out = check(board=PUZZLES["easy"]["givens"], puzzle=False)
+    code, out = check(board=PUZZLES["easy_9"]["givens"], puzzle=False)
     assert code == 1 and "puzzle unavailable" in out
 
 

@@ -5,7 +5,7 @@
 #   /workdir                        uid 1000, agent-writable; evaluate.py to read
 #   /opt/sudoku/evaluate.py         root:root 0644, the copy check_board runs
 #   /grader                         root:root 0700
-#   /task.py, /task.txt             root:root 0600
+#   /task                           root:root 0700: task.py and instructions/
 #   /variants.json                  root:root 0600
 #
 # Written per episode, not at build time:
@@ -30,8 +30,8 @@ RUN chmod 755 /opt/sudoku
 COPY --chown=root:root --chmod=700 grader/ /grader/
 RUN chmod 700 /grader && chmod -R go-rwx /grader
 
-COPY --chown=root:root --chmod=600 task.py /task.py
-COPY --chown=root:root --chmod=600 task.txt /task.txt
+COPY --chown=root:root task/ /task/
+RUN chmod -R go-rwx /task
 COPY --chown=root:root --chmod=600 variants.json /variants.json
 
 # Fail the build rather than ship an image that breaks any of the above.
@@ -39,10 +39,11 @@ RUN set -eu; \
     fatal() { echo "FATAL: $*" >&2; exit 1; }; \
     # Nothing under /grader is readable by the agent: grader, solutions, reference.
     [ -n "$(find /grader -type f)" ] || fatal "/grader is empty"; \
-    for sealed in $(find /grader -type f) /task.py /task.txt /variants.json; do \
+    for sealed in $(find /grader /task -type f) /variants.json; do \
       if su agent -c "cat '$sealed'" >/dev/null 2>&1; then fatal "agent can read $sealed"; fi; \
     done; \
     if su agent -c 'ls /grader' >/dev/null 2>&1; then fatal "agent can list /grader"; fi; \
+    if su agent -c 'ls /task' >/dev/null 2>&1; then fatal "agent can list /task"; fi; \
     # The checker check_board runs is readable and runnable, never writable.
     su agent -c 'cat /opt/sudoku/evaluate.py' >/dev/null || fatal "agent cannot read the checker"; \
     if su agent -c 'touch /opt/sudoku/evaluate.py' 2>/dev/null; then fatal "agent can modify the checker"; fi; \
