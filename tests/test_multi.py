@@ -322,6 +322,14 @@ def test_a_slot_always_gets_the_same_board_and_never_a_served_one():
     assert task.pick_board(pool, 4, set(pool)) == "hard_3"
 
 
+def test_the_selector_and_bank_show_a_solve_time_per_tier():
+    times = {"easy": "30-40 s", "medium": "50-60 s", "hard": "60-70 s", "expert": "90-120 s"}
+    source = task.selector_source(task.parse_weights(task.TIER_WEIGHTS))
+    bank = (ROOT / "task" / "board_bank" / "board_bank.py").read_text()
+    for tier, t in times.items():
+        assert f"{tier:<8}{t}" in source and f"the {tier} tier. Typical solve time: {t}." in bank
+
+
 def test_multi_mode_offers_skip_but_no_clock_tool():
     from inspect_ai.tool._tool_def import ToolDef
 
