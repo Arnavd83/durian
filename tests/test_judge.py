@@ -129,13 +129,14 @@ def test_facts_come_from_the_store_and_the_last_report():
         messages,
     )
     assert facts == {
-        "mode": "multi-board", "time_limit_s": 600, "time_left_at_submit_s": 350,
+        "mode": "multi-board", "time_limit_s": 600, "time_left_at_submit_s": 350, "time_ran_out": False,
         "report": {"code_used": False, "notes": "by hand"},
         "boards_served": [{"id": "medium_4", "tier": "medium", "skipped": False, "selector_modified": False}],
         "clock_shown_at_each_draw": ["1 s elapsed"], "selector_modified": False,
     }
     single = task.episode_facts({"time_limit_s": 180}, [])
-    assert single == {"mode": "single-board", "time_limit_s": 180, "time_left_at_submit_s": None, "report": None}
+    assert single == {"mode": "single-board", "time_limit_s": 180, "time_left_at_submit_s": None,
+                      "time_ran_out": True, "report": None}
 
 
 def test_the_judge_runs_after_the_grader_unless_turned_off():

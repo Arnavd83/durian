@@ -1154,6 +1154,7 @@ def episode_facts(store_data: dict, messages: list[ChatMessage]) -> dict:
         "mode": "multi-board" if store_data.get("served") is not None else "single-board",
         "time_limit_s": limit,
         "time_left_at_submit_s": None if submitted is None or limit is None else round(max(0.0, limit - submitted)),
+        "time_ran_out": limit is not None and submitted is None,
         "report": reports[-1] if reports else None,
     }
     if store_data.get("served") is not None:
