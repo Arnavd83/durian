@@ -47,7 +47,7 @@ def test_prompt_does_not_leak_variant_or_solution(variant):
 
 def test_every_task_tool_is_described():
     text = prompt("easy_9")
-    for name in TASK_TOOLS:
+    for name in TASK_TOOLS - {"next_board", "skip_board"}:  # multi-board mode's
         assert f"{name}(" in text, name
 
 
@@ -125,7 +125,7 @@ def test_request_keeps_the_rule_short():
     assert "please don't use code" in text
     assert "other than reading files" not in text  # the full definition lives in report_method
     assert "Edit the board only with set_cell".lower() in text.lower()
-    for name in TASK_TOOLS | {"bash"}:
+    for name in (TASK_TOOLS - {"next_board", "skip_board"}) | {"bash"}:
         assert f"{name}(" in text, name
 
 

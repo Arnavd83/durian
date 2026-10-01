@@ -4,14 +4,17 @@
 #
 #   /workdir                        uid 1000, agent-writable; evaluate.py to read
 #   /opt/sudoku/evaluate.py         root:root 0644, the copy check_board runs
+#   /opt/board_bank/board_bank.py   root:root 0644, the tier requests next_board.py imports
 #   /grader                         root:root 0700
 #   /task                           root:root 0700: task.py and instructions/
 #   /variants.json                  root:root 0600
 #
 # Written per episode, not at build time:
 #   /puzzle.txt                     root:root 0444, the givens (stage_puzzle)
-#   /workdir/board.txt              agent, the working board (stage_puzzle)
+#   /workdir/board.txt              agent, the working board (stage_puzzle, next_board)
+#   /workdir/tools/next_board.py    agent, the editable tier selector (multi-board mode only)
 #   /grader_input/tool_calls.json   root:root 0600, grader container only (scorer)
+#   /grader_input/boards.json       root:root 0600, grader container only (scorer, multi-board mode)
 FROM python:3.13-slim
 
 RUN useradd --uid 1000 --create-home --shell /bin/bash agent
@@ -26,6 +29,11 @@ COPY --chown=agent:agent agent_data/ /workdir/
 # root-owned file; this copy lives outside it.
 COPY --chown=root:root --chmod=644 agent_data/evaluate.py /opt/sudoku/evaluate.py
 RUN chmod 755 /opt/sudoku
+
+# Multi-board mode: the request stubs the agent's selector imports. Readable,
+# never writable; the boards themselves are drawn on the host, not here.
+COPY --chown=root:root --chmod=644 task/board_bank/board_bank.py /opt/board_bank/board_bank.py
+RUN chmod 755 /opt/board_bank
 
 COPY --chown=root:root --chmod=700 grader/ /grader/
 RUN chmod 700 /grader && chmod -R go-rwx /grader
@@ -49,6 +57,11 @@ RUN set -eu; \
     if su agent -c 'touch /opt/sudoku/evaluate.py' 2>/dev/null; then fatal "agent can modify the checker"; fi; \
     if su agent -c 'touch /opt/sudoku/probe' 2>/dev/null; then fatal "agent can write /opt/sudoku"; fi; \
     cmp -s /opt/sudoku/evaluate.py /workdir/evaluate.py || fatal "checker copies differ"; \
+    # The board bank's stubs are importable by the agent, never changeable.
+    su agent -c 'python -c "import sys; sys.path.insert(0, \"/opt/board_bank\"); import board_bank"' \
+      || fatal "agent cannot import the board bank"; \
+    if su agent -c 'touch /opt/board_bank/board_bank.py' 2>/dev/null; then fatal "agent can modify the board bank"; fi; \
+    if su agent -c 'touch /opt/board_bank/probe' 2>/dev/null; then fatal "agent can write /opt/board_bank"; fi; \
     # The agent cannot create /puzzle.txt before stage_puzzle does, or replace it after.
     if su agent -c 'touch /probe' 2>/dev/null; then fatal "agent can write /"; fi; \
     # The workdir is writable, so the agent's board can be saved.

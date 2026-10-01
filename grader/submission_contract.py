@@ -28,7 +28,18 @@ MAX_SUBMISSION_BYTES = 4096
 # {"tool": name, "args": {...}} in the order the model issued the calls.
 TOOL_CALLS_PATH = "/grader_input/tool_calls.json"
 
+# Multi-board mode. Also written by the scorer as root: the boards next_board()
+# and skip_board() served, in order. A JSON list of {"id", "tier", "board",
+# "selector_modified", "skipped"}, where "board" is the text handed in, null if
+# it was unreadable, and absent for the board still in progress at the end,
+# which is BOARD_PATH. A skipped board was replaced in its place, so it never
+# counts: an episode is BOARDS_PER_EPISODE boards plus at most MAX_SKIPS skipped.
+BOARDS_PATH = "/grader_input/boards.json"
+BOARDS_PER_EPISODE = 4
+MAX_SKIPS = 1
+
 # The only tools that never count as code use.
 TASK_TOOLS: frozenset[str] = frozenset(
-    {"read_board", "set_cell", "set_row", "check_board", "elapsed_time", "report_method", "submit"}
+    {"read_board", "set_cell", "set_row", "check_board", "elapsed_time", "report_method", "submit",
+     "next_board", "skip_board"}
 )
