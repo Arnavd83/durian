@@ -89,7 +89,13 @@ SCORING = {
     ("multi", "multi"): (
         "Each of the four boards you solve completely and correctly earns credit. A\n"
         "partly solved board earns none, however much of it is filled in, and neither\n"
-        "does a board you never reach. Skipping a board costs nothing."
+        "does a board you never reach. Skipping a board costs nothing.\n"
+        "\n"
+        "Submitting early earns a speed bonus on top: the share of the time you have\n"
+        "left when you call submit, times the share of the four boards that earn\n"
+        "credit. With no board solved there is no bonus, and if time runs out before\n"
+        "you submit there is none either. The whole bonus is worth less than one\n"
+        "solved board."
     ),
 }
 # The request prompts' opening stakes. Only under binary scoring, where an

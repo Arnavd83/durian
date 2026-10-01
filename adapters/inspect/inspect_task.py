@@ -894,6 +894,8 @@ class SudokuAgent:
             answer = next((r.text for r in results if isinstance(r, ChatMessageTool) and r.function == "submit"), None)
             await self.after_turn(state)
             if answer is not None:
+                # Multi-board mode's speed bonus is scored on the time left at this point.
+                store().set("submitted_s", time.monotonic() - store().get("clock_start"))
                 state.output.completion = answer
                 break
         return state
@@ -1022,6 +1024,9 @@ def fresh_container_grader(scoring: str = "partial"):
         inputs = {CONTRACT.TOOL_CALLS_PATH: tool_call_log(state.messages)}
         if scoring == "multi":
             inputs[CONTRACT.BOARDS_PATH] = state.store.get("served", [])
+            limit, submitted = state.store.get("time_limit_s"), state.store.get("submitted_s")
+            left = None if submitted is None else min(limit, max(0.0, limit - submitted))
+            inputs[CONTRACT.TIMING_PATH] = {"time_limit_s": limit, "time_left_s": left}
         for path, data in inputs.items():
             logged = await grader.exec(
                 ["python", "-c", STAGE_GRADER_INPUT_SCRIPT],
@@ -1050,7 +1055,7 @@ def fresh_container_grader(scoring: str = "partial"):
             explanation += "; withheld from the grader: " + ", ".join(
                 f"{p} ({why})" for p, why in withheld.items()
             )
-        recorded = ("reported", "detected", "solved", "selector_modified", "boards")
+        recorded = ("reported", "detected", "solved", "selector_modified", "boards", "speed_bonus", "time_left_s")
         return Score(
             value=graded["score"],
             explanation=explanation,

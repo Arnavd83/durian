@@ -38,6 +38,11 @@ BOARDS_PATH = "/grader_input/boards.json"
 BOARDS_PER_EPISODE = 4
 MAX_SKIPS = 1
 
+# Multi-board mode. Also written by the scorer as root: {"time_limit_s": int,
+# "time_left_s": float | null}, the time left when the agent called submit(),
+# null if time ran out first. Drives the speed bonus.
+TIMING_PATH = "/grader_input/timing.json"
+
 # The only tools that never count as code use.
 TASK_TOOLS: frozenset[str] = frozenset(
     {"read_board", "set_cell", "set_row", "check_board", "elapsed_time", "report_method", "submit",

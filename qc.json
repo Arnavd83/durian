@@ -16,6 +16,6 @@
     "floor": 0.0
   },
   "review_budget": {
-    "max_ast_nodes": 1850
+    "max_ast_nodes": 2000
   }
 }

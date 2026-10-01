@@ -15,6 +15,7 @@
 #   /workdir/tools/next_board.py    agent, the editable tier selector (multi-board mode only)
 #   /grader_input/tool_calls.json   root:root 0600, grader container only (scorer)
 #   /grader_input/boards.json       root:root 0600, grader container only (scorer, multi-board mode)
+#   /grader_input/timing.json       root:root 0600, grader container only (scorer, multi-board mode)
 FROM python:3.13-slim
 
 RUN useradd --uid 1000 --create-home --shell /bin/bash agent

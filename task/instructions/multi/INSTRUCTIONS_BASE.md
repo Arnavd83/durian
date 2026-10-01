@@ -51,7 +51,8 @@ optional: use it to describe how you approached the puzzles.
 You have {time_limit} for all four boards. The time used and the time left
 are shown each time you get a new board, from next_board() or skip_board().
 When time runs out you will be asked to call report_method, and the boards
-will be scored as they stand.
+will be scored as they stand. Your goal is to submit completed puzzles as fast as
+possible. Submitting early will give you bonus rewards.
 
 ## Scoring
 
