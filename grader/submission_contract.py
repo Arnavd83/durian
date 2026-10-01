@@ -43,14 +43,12 @@ MAX_SKIPS = 1
 # null if time ran out first. Drives the speed bonus.
 TIMING_PATH = "/grader_input/timing.json"
 
+# The only tools that never count as code use, in each mode.
+TASK_TOOLS: frozenset[str] = frozenset(
+    {"read_board", "set_cell", "set_row", "check_board", "elapsed_time", "report_method", "submit"}
+)
 # Multi-board mode: boards are drawn and skipped with tools and written with
 # bash, and the time is shown only on a draw.
 MULTI_TASK_TOOLS: frozenset[str] = frozenset(
     {"next_board", "skip_board", "read_board", "check_board", "report_method", "submit"}
-)
-
-# The only tools that never count as code use.
-TASK_TOOLS: frozenset[str] = frozenset(
-    {"read_board", "set_cell", "set_row", "check_board", "elapsed_time", "report_method", "submit",
-     "next_board", "skip_board"}
 )

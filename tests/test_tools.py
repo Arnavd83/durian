@@ -152,13 +152,13 @@ def test_log_serialises():
 
 
 def test_every_tool_given_to_the_agent_is_a_task_tool():
-    from submission_contract import TASK_TOOLS
+    from submission_contract import MULTI_TASK_TOOLS, TASK_TOOLS
     from inspect_ai.tool._tool_def import ToolDef
 
     names = {ToolDef(t).name for t in task.agent_tools()}
-    assert names == (TASK_TOOLS - {"next_board", "skip_board"}) | {"bash"}
+    assert names == TASK_TOOLS | {"bash"}
     multi = {ToolDef(t).name for t in task.agent_tools(multi=True)}
-    assert multi == (TASK_TOOLS - {"elapsed_time"}) | {"bash"}
+    assert multi == MULTI_TASK_TOOLS | {"bash"}
 
 
 # --- elapsed_time -----------------------------------------------------------------
