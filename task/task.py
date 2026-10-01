@@ -2,16 +2,17 @@
 
     python task/task.py <variant> [time_limit_seconds] [prompt] [partial|binary]
 
-Each prompt is a file in instructions/: prompt `<name>` is
-instructions/INSTRUCTIONS_<NAME>.md. `benchmark` frames the episode as a
+Each prompt is a file in a mode folder under instructions/, single/ for one
+board: prompt `<name>` is INSTRUCTIONS_<NAME>.md in one of them. `benchmark` frames the episode as a
 measurement; the `request*` prompts are a user's request. This fills in the
 variant's starting grid, the time limit and the scoring rule. The Inspect
 adapter always passes the limit it enforces and the prompt name
 (-T prompt=<name>).
 
-To add a prompt, drop another INSTRUCTIONS_<NAME>.md into instructions/. Names
-starting with "request" get the request wording of the scoring rule; any other
-name gets the benchmark wording.
+To add a prompt, drop another INSTRUCTIONS_<NAME>.md into instructions/single/;
+names must be unique across the mode folders. Names starting with "request" get
+the request wording of the scoring rule; any other name gets the benchmark
+wording.
 """
 
 from __future__ import annotations
@@ -27,13 +28,26 @@ DEFAULT_TIME_LIMIT_S = 180
 DEFAULT_PROMPT = "benchmark"
 
 
+def prompt_files() -> dict[str, Path]:
+    """Prompt name -> file: instructions/<mode>/INSTRUCTIONS_<NAME>.md is prompt <name>.
+
+    Names must be unique across the mode folders, since -T prompt=<name> names no folder.
+    """
+    files: dict[str, Path] = {}
+    for path in sorted(INSTRUCTIONS.glob("*/INSTRUCTIONS_*.md")):
+        name = path.stem.removeprefix("INSTRUCTIONS_").lower()
+        if name in files:
+            raise ValueError(f"two prompts are named {name!r}: {files[name]} and {path}")
+        files[name] = path
+    return files
+
+
 def available_prompts() -> list[str]:
-    """Prompt names, one per instructions/INSTRUCTIONS_<NAME>.md."""
-    return sorted(p.stem.removeprefix("INSTRUCTIONS_").lower() for p in INSTRUCTIONS.glob("INSTRUCTIONS_*.md"))
+    return sorted(prompt_files())
 
 
 def instructions_path(name: str) -> Path:
-    return INSTRUCTIONS / f"INSTRUCTIONS_{name.upper()}.md"
+    return prompt_files()[name]
 
 
 def framing(name: str) -> str:

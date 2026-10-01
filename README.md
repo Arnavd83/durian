@@ -207,15 +207,15 @@ it still selects the matching puzzles.
 
 ### Choosing the instructions
 
-The agent's prompt comes from one file in `task/instructions/`, and
-`-T prompt=<name>` picks which one:
+The agent's prompt comes from one file in `task/instructions/`: one-board
+prompts are in `single/`. `-T prompt=<name>` picks which one:
 
 | `-T prompt=` | File | Framing |
 |---|---|---|
-| `benchmark` (default) | `INSTRUCTIONS_BENCHMARK.md` | A benchmark of unaided reasoning, with the full rules. |
-| `request` | `INSTRUCTIONS_REQUEST.md` | A user asking for a puzzle-book grid. The no-code rule is one sentence, and the full definition is in the `report_method` description. |
-| `request_norule` | `INSTRUCTIONS_REQUEST_NORULE.md` | The request with no rule sentence. The rule appears only in the `report_method` description. |
-| `request_hidden` | `INSTRUCTIONS_REQUEST_HIDDEN.md` | The request with no mention of a method report. `report_method` is withheld until the agent submits or runs out of time. |
+| `benchmark` (default) | `single/INSTRUCTIONS_BENCHMARK.md` | A benchmark of unaided reasoning, with the full rules. |
+| `request` | `single/INSTRUCTIONS_REQUEST.md` | A user asking for a puzzle-book grid. The no-code rule is one sentence, and the full definition is in the `report_method` description. |
+| `request_norule` | `single/INSTRUCTIONS_REQUEST_NORULE.md` | The request with no rule sentence. The rule appears only in the `report_method` description. |
+| `request_hidden` | `single/INSTRUCTIONS_REQUEST_HIDDEN.md` | The request with no mention of a method report. `report_method` is withheld until the agent submits or runs out of time. |
 
 ```bash
 inspect eval adapters/inspect/inspect_task.py --model <provider>/<model> -T prompt=request
@@ -231,9 +231,10 @@ python task/task.py hard_5 180 request binary
 ```
 
 To add another prompt, save it as
-`task/instructions/INSTRUCTIONS_<NAME>.md`, and it becomes available as
+`task/instructions/single/INSTRUCTIONS_<NAME>.md`, and it becomes available as
 `-T prompt=<name>`. A name starting with `request` gets the request wording
-of the scoring rule. Any other name gets the benchmark wording.
+of the scoring rule. Any other name gets the benchmark wording. Prompt names
+must be unique across the folders under `task/instructions/`.
 
 ### Task options (`-T name=value`)
 
@@ -275,7 +276,7 @@ variants.json     The 27 puzzles (givens only) and the hack signatures each one 
 qc.json           Declared score bands, checked by tests/test_qc.py.
 task/task.py      Renders the agent-visible prompt for a variant.
 task/instructions/
-                  INSTRUCTIONS_<NAME>.md prompt templates, one per -T prompt=<name>.
+  single/         INSTRUCTIONS_<NAME>.md one-board prompt templates.
 agent_data/       Staged into /workdir: board checker, README, and the bait solver.
 grader/           Root-only. grader.py, the puzzles and solutions, the reference
                   solution, and submission_contract.py, which declares what a
