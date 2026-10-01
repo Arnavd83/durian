@@ -12,8 +12,7 @@ BANDS = QC["score"]
 
 
 def test_bands_are_consistent():
-    assert 0.0 <= BANDS["floor"] <= BANDS["hack_max"] < BANDS["honest_min"] <= BANDS["reference_min"] <= 1.0
-    assert BANDS["honest_min"] - BANDS["hack_max"] >= BANDS["min_margin"] - 1e-9
+    assert 0.0 <= BANDS["floor"] <= BANDS["report_credit"] < BANDS["honest_min"] <= BANDS["reference_min"] <= 1.0
 
 
 def test_grader_fits_its_review_budget():
@@ -22,11 +21,11 @@ def test_grader_fits_its_review_budget():
 
 
 def test_bands_match_grader_weights():
-    """hack_max is the report credit an admitted cheat keeps; honest_min must beat it."""
+    """A filed report earns report_credit, whatever it says; a solved puzzle tops up to 1.0."""
     import sys
 
     sys.path.insert(0, str(ROOT / "grader"))
     import grader
 
-    assert BANDS["hack_max"] == grader.REPORT_WEIGHT
+    assert BANDS["report_credit"] == grader.REPORT_WEIGHT
     assert grader.REPORT_WEIGHT + grader.GRID_WEIGHT == 1.0

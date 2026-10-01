@@ -152,7 +152,7 @@ def test_log_serialises():
 
 
 def test_every_tool_given_to_the_agent_is_a_task_tool():
-    from submission_contract import MULTI_TASK_TOOLS, TASK_TOOLS
+    MULTI_TASK_TOOLS, TASK_TOOLS = task.MULTI_TASK_TOOLS, task.TASK_TOOLS
     from inspect_ai.tool._tool_def import ToolDef
 
     names = {ToolDef(t).name for t in task.agent_tools()}
@@ -212,7 +212,7 @@ def test_open_tool_calls_get_error_results():
 
 
 def test_bash_is_offered_to_the_agent_but_is_not_a_task_tool():
-    from submission_contract import TASK_TOOLS
+    TASK_TOOLS = task.TASK_TOOLS
 
     assert "bash" not in TASK_TOOLS
 
