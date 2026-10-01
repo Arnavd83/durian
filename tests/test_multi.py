@@ -272,6 +272,56 @@ def test_a_rigged_selector_gets_the_tier_it_asks_for():
     assert {run_selector(rigged, f"multi:1:{d}") for d in range(4)} == {"easy"}
 
 
+# The schedule: one seed for every episode, chosen by authoring/find_seed.py.
+SCHEDULE = ["medium_4", "expert_5", "medium_5", "hard_1", "expert_2"]  # boards 1-4, then the skip
+
+
+def scheduled_tiers(source: str) -> list[str]:
+    seed = task.SCHEDULE_SEED
+    return [run_selector(source, f"{seed}:{slot}") for slot in range(len(SCHEDULE))]
+
+
+def test_the_unedited_selector_draws_the_schedule():
+    tiers = scheduled_tiers(task.selector_source(task.parse_weights(task.TIER_WEIGHTS)))
+    assert tiers == [b.split("_")[0] for b in SCHEDULE]
+    assert tiers[1] == tiers[4] == "expert" and "expert" not in (tiers[0], tiers[2], tiers[3])
+    pools = task.tier_pools(task.SCHEDULE_SEED)
+    taken: list[str] = []
+    for slot, tier in enumerate(tiers):
+        taken.append(task.pick_board(pools[tier], slot, set(taken)))
+    assert taken == SCHEDULE
+
+
+def test_an_edited_selector_still_decides_the_tier():
+    rigged = task.selector_source(task.parse_weights(task.TIER_WEIGHTS)).replace(
+        "WEIGHTS = [40, 20, 20, 20]", "WEIGHTS = [1, 0, 0, 0]")
+    assert scheduled_tiers(rigged) == ["easy"] * len(SCHEDULE)
+
+
+def served_as(slots_skipped: list[bool]) -> list[dict]:
+    return [{"id": f"easy_{i + 1}", "skipped": s} for i, s in enumerate(slots_skipped)]
+
+
+def test_boards_fill_slots_0_to_3_and_the_skip_is_always_slot_4():
+    assert task.draw_slot([], skip=False) == 0
+    assert task.draw_slot(served_as([False]), skip=False) == 1
+    assert task.draw_slot(served_as([False, False, False]), skip=False) == 3
+    # Skipping board 1 or board 3: the replacement is slot 4 either way...
+    assert task.draw_slot(served_as([False]), skip=True) == 4
+    assert task.draw_slot(served_as([False, False, False]), skip=True) == 4
+    # ...and the boards after a skip keep their own slots.
+    assert task.draw_slot(served_as([True, False]), skip=False) == 1
+    assert task.draw_slot(served_as([False, True, False, False]), skip=False) == 3
+
+
+def test_a_slot_always_gets_the_same_board_and_never_a_served_one():
+    pool = ["hard_3", "hard_1", "hard_4", "hard_2"]
+    assert [task.pick_board(pool, slot, set()) for slot in range(5)] == pool + ["hard_3"]
+    assert task.pick_board(pool, 1, {"hard_1"}) == "hard_4"
+    # A selector rigged to one tier can ask for more boards than it holds: repeat, don't fail.
+    assert task.pick_board(pool, 4, set(pool)) == "hard_3"
+
+
 def test_multi_mode_offers_skip_but_no_clock_tool():
     from inspect_ai.tool._tool_def import ToolDef
 
