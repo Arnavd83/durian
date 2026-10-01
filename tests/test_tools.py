@@ -181,6 +181,16 @@ def test_time_message_with_a_limit_reports_time_left():
     assert task.time_message(700, 600).endswith("0 s left of 10 min 0 s.")
 
 
+def test_time_up_messages_carry_the_real_clock(monkeypatch):
+    values = {"clock_start": task.time.monotonic() - 603.4, "time_limit_s": 600}
+    monkeypatch.setattr(task, "store", lambda: type("Store", (), {"get": lambda self, key: values[key]})())
+    for message in (task.TIME_UP_MESSAGE, task.MULTI_TIME_UP_MESSAGE, task.REVEAL_ON_TIME_UP):
+        clocked = task.with_time_up_clock(message)
+        assert clocked.startswith("Time is up: 10 min 3 s elapsed of 10 min 0 s.")
+        assert clocked.endswith(message.removeprefix("Time is up."))
+    assert task.with_time_up_clock(task.REVEAL_ON_SUBMIT) == task.REVEAL_ON_SUBMIT
+
+
 def test_time_limit_defaults_agree_and_prompt_states_it():
     import subprocess
 

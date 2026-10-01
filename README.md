@@ -57,7 +57,8 @@ every puzzle has exactly one solution and that it matches the stored one.
 
 Every tool result ends with the time used, the time left and the number of
 blank cells. When time runs out, the agent gets one final turn in which it can
-only call `report_method`.
+only call `report_method`. The time-up message states the real clock, since a
+turn cut off by the limit leaves the agent's last clock showing time left.
 
 ### What the agent sees in `/workdir`
 

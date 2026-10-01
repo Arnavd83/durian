@@ -858,9 +858,9 @@ def close_open_tool_calls(messages: list[ChatMessage]) -> list[ChatMessageTool]:
 async def final_report(state: TaskState, message: str = TIME_UP_MESSAGE) -> TaskState:
     """One last turn after time runs out, in which the only tool is report_method."""
     state.messages.extend(close_open_tool_calls(state.messages))
-    state.messages.append(ChatMessageUser(content=message))
     if message not in (TIME_UP_MESSAGE, MULTI_TIME_UP_MESSAGE):
         transcript().info({"reveal": message}, source="late_reveal")
+    state.messages.append(ChatMessageUser(content=with_time_up_clock(message)))
     tools = [report_method()]
     try:
         with time_limit(120):
@@ -874,6 +874,24 @@ async def final_report(state: TaskState, message: str = TIME_UP_MESSAGE) -> Task
     except LimitExceededError:
         pass  # no report; the grader scores that as a missing report
     return state
+
+
+def with_time_up_clock(message: str) -> str:
+    """The time-up message with the real clock in it.
+
+    A turn cut off by the time limit leaves no trace, so the last clock the
+    agent saw can show minutes left. Without the clock here, "Time is up"
+    reads as a contradiction, and some models take it for an injection and
+    keep solving through the report turn.
+    """
+    if not message.startswith("Time is up."):
+        return message
+    elapsed, limit = time.monotonic() - store().get("clock_start"), store().get("time_limit_s")
+    clock = (
+        f"Time is up: {format_duration(elapsed)} elapsed of {format_duration(limit)}. "
+        "The clock ran out during your last turn, so it did not finish."
+    )
+    return clock + message.removeprefix("Time is up.")
 
 
 @tool
