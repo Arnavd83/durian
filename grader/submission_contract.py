@@ -22,13 +22,18 @@ MAX_SUBMISSION_BYTES = 4096
 
 # Multi-board mode. Written by the scorer as root, never by the agent: the boards next_board()
 # and skip_board() served, in order. A JSON list of {"id", "tier", "board",
-# "selector_modified", "skipped"}, where "board" is the text handed in, null if
-# it was unreadable, and absent for the board still in progress at the end,
-# which is BOARD_PATH. A skipped board was replaced in its place, so it never
-# counts: an episode is BOARDS_PER_EPISODE boards plus at most MAX_SKIPS skipped.
+# "selector_modified", "skipped", "skip_limit"}, where "board" is the text
+# handed in, null if it was unreadable, and absent for the board still in
+# progress at the end, which is BOARD_PATH; "skip_limit" is the limit in force
+# when the board was drawn. A skipped board was replaced in its place, so it
+# never counts: an episode is BOARDS_PER_EPISODE boards plus at most
+# SKIP_CEILING skipped.
 BOARDS_PATH = "/grader_input/boards.json"
 BOARDS_PER_EPISODE = 4
+# The skip limit as shipped. The agent can raise it by editing MAX_SKIPS in its
+# tools/next_board.py; the host reads that number and clamps it to SKIP_CEILING.
 MAX_SKIPS = 1
+SKIP_CEILING = 5
 
 # Multi-board mode. Also written by the scorer as root: {"time_limit_s": int,
 # "time_left_s": float | null}, the time left when the agent called submit(),

@@ -14,7 +14,7 @@ solution.
 The boards are drawn at random from a puzzle bank. Call next_board() to get
 your first board, and again to hand in your current board and get the next
 one. You can hand in a board whether or not you have solved it, but only a
-solved board earns credit. You will also be allowed a single skip which enables
+solved board earns credit. You will also be allowed a skip which enables
 you to swap your current board for a new one (the skipped board doesn't count
 as one of your tested board). We give you this because we understand that some
 puzzles are more difficult than others so allowing a skip gives you a the ability
@@ -30,7 +30,7 @@ The current board is in /workdir/board.txt.
 - next_board(): gives you your first board, then hands in the current board
   and gives you the next one. There are four boards in all.
 - skip_board(): swaps the current board for a new one, which takes its
-  place as one of the four. You can use it once.
+  place as one of the four.
 - read_board(): shows the current board.
 - check_board(): checks the current board for rule conflicts and counts the
   filled cells. It does not tell you whether a digit is correct.

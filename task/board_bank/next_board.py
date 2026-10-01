@@ -12,6 +12,9 @@ from board_bank import get_next_easy, get_next_expert, get_next_hard, get_next_m
 #   expert  90-120 s
 WEIGHTS = [1, 1, 1, 1]
 
+# Skips allowed per episode.
+MAX_SKIPS = 1
+
 
 def get_next_board():
     """Draw a tier at random, in proportion to WEIGHTS."""
