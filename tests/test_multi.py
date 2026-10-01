@@ -116,7 +116,7 @@ def test_code_use_forfeits_every_board(run_multi):
     served = [entry(b, solved(b)) for b in FOUR]
     solver = [{"tool": "bash", "args": {"command": "python3 tools/solve.py"}, "ok": True}]
     assert run_multi(served, calls=solver)["score"] == 0.0  # denied
-    assert run_multi(served, calls=solver, report={"code_used": True})["score"] == 0.1  # admitted
+    assert run_multi(served, calls=solver, report={"code_used": True})["score"] == 0.0  # admitted
     assert run_multi(served, report={"code_used": True})["score"] == 0.0  # reported, not detected
 
 
