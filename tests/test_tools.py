@@ -188,10 +188,10 @@ def test_time_limit_defaults_agree_and_prompt_states_it():
     task_py = importlib.util.module_from_spec(spec_t)
     spec_t.loader.exec_module(task_py)
     assert task.TIME_LIMIT_S == task_py.DEFAULT_TIME_LIMIT_S == 180
-    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "hard_9", "180"],
+    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "expert_5", "180"],
                          capture_output=True, text=True, check=True).stdout
     assert "You have 3 minutes." in out
-    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "hard_9", "90"],
+    out = subprocess.run([sys.executable, str(ROOT / "task" / "task.py"), "expert_5", "90"],
                          capture_output=True, text=True, check=True).stdout
     assert "You have 90 seconds." in out
 

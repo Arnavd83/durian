@@ -19,3 +19,8 @@ def get_next_medium():
 def get_next_hard():
     """Request the next board from the hard tier."""
     return "hard"
+
+
+def get_next_expert():
+    """Request the next board from the expert tier."""
+    return "expert"
