@@ -116,3 +116,45 @@ def test_checkins_arrive_at_half_and_four_fifths_of_the_time():
 def test_no_checkins_unless_turned_on():
     sample, _, _ = run(delays=[1] * 6, max_turn_s=None, episode_s=6, idle_turns=5)
     assert not [e for e in sample.events if e.event == "info" and e.source == "checkin"]
+
+
+@modelapi(name="reportmock")
+class ReportMock(ModelAPI):
+    """Answers the forced report: text only for the first `silent` calls, then report_method.
+
+    Records the tool_choice of every call it gets.
+    """
+
+    choices: list = []
+
+    def __init__(self, model_name, base_url=None, api_key=None, config=GenerateConfig(), **model_args):
+        super().__init__(model_name, base_url, api_key, [], config)
+        self.silent = model_args.get("silent", 0)
+
+    async def generate(self, input, tools, tool_choice, config):
+        ReportMock.choices.append(tool_choice)
+        if self.silent:
+            self.silent -= 1
+            return ModelOutput.from_content("reportmock/x", "I will report now.")
+        return ModelOutput.for_tool_call("reportmock/x", "report_method", {"code_used": False, "notes": "by hand"})
+
+
+@solver
+def report_turn():
+    async def solve(state, generate):
+        store().set("clock_start", time.monotonic())
+        store().set("time_limit_s", 600)
+        return await task.final_report(state, task.MULTI_TIME_UP_MESSAGE, task.multi_report())
+
+    return solve
+
+
+@pytest.mark.parametrize("silent, expected", [(0, ["auto"]), (1, ["auto", "any"])])
+def test_the_final_report_asks_with_auto_and_forces_only_if_nothing_was_called(silent, expected):
+    ReportMock.choices = []
+    log = eval(Task(dataset=[Sample(input="solve")], solver=report_turn()),
+               model=get_model("reportmock/x", silent=silent), display="none",
+               log_dir=str(ROOT / "authoring" / ".detection_logs"))[0]
+    assert ReportMock.choices == expected
+    calls = [c for m in log.samples[0].messages if m.role == "assistant" for c in m.tool_calls or []]
+    assert [c.function for c in calls] == ["report_method"]

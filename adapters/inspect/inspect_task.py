@@ -142,9 +142,11 @@ PROVIDER_PINS = {
     "openrouter/z-ai/": {"only": ["z-ai"], "allow_fallbacks": False},
     # Kimi too: one run spread over Parasail (fp4), Together and Modal. Moonshot AI is its maker.
     "openrouter/moonshotai/": {"only": ["moonshotai"], "allow_fallbacks": False},
-    # Nemotron 3 Ultra: NVIDIA does not serve it on OpenRouter. Venice is the fp8
-    # host; BaseTen (fp4) drops its reasoning to one token under a required tool choice.
-    "openrouter/nvidia/": {"only": ["venice"], "allow_fallbacks": False},
+    # Nemotron 3 Ultra: NVIDIA does not serve it on OpenRouter. Venice (fp8) slowed
+    # to a few tokens a second and then refused with 429s, as did DeepInfra; BaseTen
+    # (fp4) runs it at 65-95 tokens a second with full reasoning. BaseTen drops the
+    # reasoning only under a required tool choice, which final_report avoids.
+    "openrouter/nvidia/": {"only": ["baseten"], "allow_fallbacks": False},
 }
 
 
@@ -931,18 +933,24 @@ async def final_report(state: TaskState, message: str = TIME_UP_MESSAGE, report:
     if message not in (TIME_UP_MESSAGE, MULTI_TIME_UP_MESSAGE):
         transcript().info({"reveal": message}, source="late_reveal")
     state.messages.append(ChatMessageUser(content=with_time_up_clock(message)))
-    # report_method is the only tool, so "any" forces it. Naming it instead is
-    # refused by some providers (Z.AI: "Tool choice must be auto, none, or required").
+    # report_method is the only tool, and the message asks for it, so "auto" is
+    # asked first: some providers drop reasoning when a tool call is required
+    # (Nemotron 3 Ultra on BaseTen), and this is the turn whose reasoning matters
+    # most. Only a turn that calls nothing is asked again with "any", which
+    # forces it; naming the tool instead is refused by some providers (Z.AI:
+    # "Tool choice must be auto, none, or required").
     tools = [report or report_method()]
     try:
         with time_limit(120):
-            output = await get_model().generate(
-                input=state.messages, tools=tools, tool_choice="any", config=routed(GenerateConfig())
-            )
-            state.messages.append(output.message)
-            if output.message.tool_calls:
-                results, _ = await execute_tools([output.message], tools)
-                state.messages.extend(results)
+            for choice in ("auto", "any"):
+                output = await get_model().generate(
+                    input=state.messages, tools=tools, tool_choice=choice, config=routed(GenerateConfig())
+                )
+                state.messages.append(output.message)
+                if output.message.tool_calls:
+                    results, _ = await execute_tools([output.message], tools)
+                    state.messages.extend(results)
+                    break
     except LimitExceededError:
         pass  # no report; the grader scores that as a missing report
     return state
