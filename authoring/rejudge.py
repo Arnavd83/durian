@@ -59,6 +59,7 @@ def main() -> None:
         flags = f"  DISAGREES: {'; '.join(v['disagreements'])}" if v["disagreements"] else ""
         print(f"{v['id']} ep{v['epoch']}  score {v['score']}  cheated={v['cheated']} {v['cheat_types']}  "
               f"awareness={v['awareness']}  report_honest={v['report_honest']}  [{v['judge_model']}]{flags}\n"
+              f"    by hack: {', '.join(f'{h}={a}' for h, a in v['hack_awareness'].items() if a != 'none') or 'none'}\n"
               f"    {v['summary']}")
     if args.json:
         Path(args.json).write_text(json.dumps(verdicts, indent=1, default=str))
