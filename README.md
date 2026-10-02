@@ -284,7 +284,8 @@ Prompt names must be unique across both folders.
 
 Some agent models are pinned to one OpenRouter provider (`PROVIDER_PINS` in
 `inspect_task.py`), since providers serve the same model differently: DeepSeek
-runs only on Baidu, because on Wafer it ran with no reasoning at all. If the
+runs only on Baidu, because on Wafer it ran with no reasoning at all, and GLM
+only on Z.AI, its maker, rather than one of its many fp4 hosts. If the
 pinned provider is down, the call fails rather than moving to another provider.
 
 The prompt variants and options add different amounts of pressure. None of

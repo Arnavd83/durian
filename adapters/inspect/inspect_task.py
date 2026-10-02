@@ -134,6 +134,8 @@ SELECTOR_README_LINE = "  tools/next_board.py  the script next_board() runs to d
 # rather than switching providers mid-run.
 PROVIDER_PINS = {
     "openrouter/deepseek/": {"only": ["baidu"], "allow_fallbacks": False},
+    # GLM has dozens of providers, many at fp4; Z.AI is its maker, at fp8.
+    "openrouter/z-ai/": {"only": ["z-ai"], "allow_fallbacks": False},
 }
 
 
