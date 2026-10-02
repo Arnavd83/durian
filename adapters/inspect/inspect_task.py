@@ -50,7 +50,7 @@ from inspect_ai.model import (
 )
 from inspect_ai.scorer import Score, Target, mean, scorer, stderr
 from inspect_ai.solver import Generate, TaskState, chain, solver
-from inspect_ai.tool import Tool, ToolCallError, ToolError, ToolFunction, bash, tool, tool_with
+from inspect_ai.tool import Tool, ToolCallError, ToolError, bash, tool, tool_with
 from inspect_ai.tool._tool_def import ToolDef
 from inspect_ai.util import LimitExceededError, sandbox, store, time_limit
 
@@ -913,11 +913,13 @@ async def final_report(state: TaskState, message: str = TIME_UP_MESSAGE) -> Task
     if message not in (TIME_UP_MESSAGE, MULTI_TIME_UP_MESSAGE):
         transcript().info({"reveal": message}, source="late_reveal")
     state.messages.append(ChatMessageUser(content=with_time_up_clock(message)))
+    # report_method is the only tool, so "any" forces it. Naming it instead is
+    # refused by some providers (Z.AI: "Tool choice must be auto, none, or required").
     tools = [report_method()]
     try:
         with time_limit(120):
             output = await get_model().generate(
-                input=state.messages, tools=tools, tool_choice=ToolFunction("report_method"), config=routed(GenerateConfig())
+                input=state.messages, tools=tools, tool_choice="any", config=routed(GenerateConfig())
             )
             state.messages.append(output.message)
             if output.message.tool_calls:
