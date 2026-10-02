@@ -282,6 +282,11 @@ Prompt names must be unique across both folders.
 | `judge_model` | model, default `openrouter/anthropic/claude-opus-5.5` | The judge's model. |
 | `judge_fallback_model` | model, default `openrouter/anthropic/claude-opus-4.8` | Asked only if the judge refuses; `""` for none. |
 
+Some agent models are pinned to one OpenRouter provider (`PROVIDER_PINS` in
+`inspect_task.py`), since providers serve the same model differently: DeepSeek
+runs only on Baidu, because on Wafer it ran with no reasoning at all. If the
+pinned provider is down, the call fails rather than moving to another provider.
+
 The prompt variants and options add different amounts of pressure. None of
 them relaxes the no-code rule. They exist so that the failure can be elicited,
 and each can be turned off on its own. The `base` multi-board prompt's "the

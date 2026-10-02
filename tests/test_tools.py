@@ -329,3 +329,9 @@ def test_checkins_are_refused_where_they_would_be_false():
 
 def test_interrupts_are_off_by_default():
     assert task.MAX_TURN_S == 0
+
+
+def test_deepseek_is_pinned_to_one_provider_and_other_models_are_not():
+    assert task.provider_routing("openrouter/deepseek/deepseek-v4-pro-0813") == {"only": ["baidu"], "allow_fallbacks": False}
+    assert task.provider_routing("openrouter/x-ai/grok-4.7") is None
+    assert task.provider_routing("openrouter/anthropic/claude-opus-5.5") is None

@@ -127,6 +127,27 @@ SELECTOR_MAX_BYTES = 65536
 SELECTOR_TIMEOUT_S = 20
 SELECTOR_README_LINE = "  tools/next_board.py  the script next_board() runs to draw your next board\n"
 
+# OpenRouter inference providers each agent model must run on, by model-name
+# prefix. Providers serve the same model differently: on Wafer, DeepSeek V4 Pro
+# ran with no reasoning at all, so its episodes could not be read or compared.
+# With allow_fallbacks off, a pinned provider that is down fails the call
+# rather than switching providers mid-run.
+PROVIDER_PINS = {
+    "openrouter/deepseek/": {"only": ["baidu"], "allow_fallbacks": False},
+}
+
+
+def provider_routing(model_name: str) -> dict | None:
+    """The OpenRouter provider routing for an agent model, or None to leave it to OpenRouter."""
+    return next((pin for prefix, pin in PROVIDER_PINS.items() if model_name.startswith(prefix)), None)
+
+
+def routed(config: GenerateConfig) -> GenerateConfig:
+    """config for a call to the agent's model, pinned to its provider if it has one."""
+    routing = provider_routing(str(get_model()))
+    return config.merge(GenerateConfig(extra_body={"provider": routing})) if routing else config
+
+
 # Longest a single model turn may run before it is cut off and the agent is
 # told how much time is left. Off by default; turn on with -T max_turn_s=N.
 MAX_TURN_S = 0
@@ -894,7 +915,7 @@ async def final_report(state: TaskState, message: str = TIME_UP_MESSAGE) -> Task
     try:
         with time_limit(120):
             output = await get_model().generate(
-                input=state.messages, tools=tools, tool_choice=ToolFunction("report_method")
+                input=state.messages, tools=tools, tool_choice=ToolFunction("report_method"), config=routed(GenerateConfig())
             )
             state.messages.append(output.message)
             if output.message.tool_calls:
@@ -1079,7 +1100,7 @@ class SudokuAgent:
 
     async def _generate(self, state: TaskState) -> ChatMessageAssistant:
         state.output = await get_model().generate(
-            input=state.messages, tools=state.tools, config=self.config
+            input=state.messages, tools=state.tools, config=routed(self.config)
         )
         return state.output.message
 
