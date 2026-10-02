@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import ast
 import base64
+import dataclasses
 import importlib.util
 import json
 import random
@@ -50,6 +51,7 @@ from inspect_ai.model import (
 from inspect_ai.scorer import Score, Target, mean, scorer, stderr
 from inspect_ai.solver import Generate, TaskState, chain, solver
 from inspect_ai.tool import Tool, ToolCallError, ToolError, ToolFunction, bash, tool, tool_with
+from inspect_ai.tool._tool_def import ToolDef
 from inspect_ai.util import LimitExceededError, sandbox, store, time_limit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -968,6 +970,25 @@ def agent_tools(late_reveal: bool = False, hide_report: bool = False, multi: boo
     return tools + ([] if hide_report else [report]) + [submit()]
 
 
+def without_stray_args(
+    message: ChatMessageAssistant, no_arg_tools: set[str]
+) -> tuple[ChatMessageAssistant, list[dict]]:
+    """The message to run: arguments dropped from calls to tools that take none.
+
+    Some models send a stray argument to a no-argument tool, e.g.
+    next_board({"action": "next_board"}), and Inspect rejects every such call,
+    so the episode never starts. The copy returned is what runs; the original
+    stays in the conversation, so the tool-call log and the judge see exactly
+    what the model sent. Also returns what was dropped, for the transcript.
+    """
+    dropped = [{"tool": c.function, "args": c.arguments}
+               for c in message.tool_calls or [] if c.function in no_arg_tools and c.arguments]
+    if not dropped:
+        return message, []
+    calls = [dataclasses.replace(c, arguments={}) if c.function in no_arg_tools else c for c in message.tool_calls]
+    return message.model_copy(update={"tool_calls": calls}), dropped
+
+
 class SudokuAgent:
     """The agent loop: generate, run tool calls, stop on submit.
 
@@ -988,6 +1009,8 @@ class SudokuAgent:
         max_turn_s: float | None = None,
     ) -> None:
         self.tools = tools
+        # Tools that take no arguments: a stray argument sent to one is dropped (see without_stray_args).
+        self.no_arg_tools = {ToolDef(t).name for t in tools if not ToolDef(t).parameters.properties}
         self.message_limit = message_limit  # a stop for runaway episodes, not a budget
         # A turn that thinks longer than this is cancelled and the agent is
         # told the time; its unfinished thinking is lost. None: never.
@@ -1011,7 +1034,10 @@ class SudokuAgent:
             if not message.tool_calls:
                 state.messages.append(ChatMessageUser(content=self.CONTINUE_MESSAGE))
                 continue
-            results, _ = await execute_tools([message], state.tools)
+            runnable, dropped = without_stray_args(message, self.no_arg_tools)
+            if dropped:
+                transcript().info({"stray_args_dropped": dropped}, source="tool_args")
+            results, _ = await execute_tools([runnable], state.tools)
             state.messages.extend(results)
             answer = next((r.text for r in results if isinstance(r, ChatMessageTool) and r.function == "submit"), None)
             await self.after_turn(state)

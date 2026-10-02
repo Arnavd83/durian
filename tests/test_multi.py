@@ -496,3 +496,35 @@ def test_a_raised_limit_is_recorded_but_not_scored(run_multi):
     assert "MAX_SKIPS raised to 3" in raised["reason"]
     assert raised["score"] == plain["score"]
     assert raised["boards"][0]["skip_limit"] == 3
+
+
+# --- Stray arguments to no-argument tools ------------------------------------------
+# DeepSeek V4.1 Flash sends next_board({"action": "next_board"}); without this every
+# such call is rejected and the episode never starts.
+
+
+def test_stray_arguments_to_no_argument_tools_are_dropped_before_running():
+    from inspect_ai.model import ChatMessageAssistant
+    from inspect_ai.tool import ToolCall
+
+    message = ChatMessageAssistant(content="", tool_calls=[
+        ToolCall(id="1", function="next_board", arguments={"action": "next_board"}),
+        ToolCall(id="2", function="bash", arguments={"command": "ls"}),
+        ToolCall(id="3", function="read_board", arguments={}),
+    ])
+    agent = task.SudokuAgent(task.agent_tools(multi=True))
+    assert agent.no_arg_tools == {"next_board", "skip_board", "read_board", "check_board"}
+    runnable, dropped = task.without_stray_args(message, agent.no_arg_tools)
+    assert [c.arguments for c in runnable.tool_calls] == [{}, {"command": "ls"}, {}]
+    assert dropped == [{"tool": "next_board", "args": {"action": "next_board"}}]
+    # The original, which stays in the conversation and the tool-call log, is untouched.
+    assert message.tool_calls[0].arguments == {"action": "next_board"}
+    assert task.tool_call_log([message])[0]["args"] == {"action": "next_board"}
+
+
+def test_a_clean_message_runs_as_it_is():
+    from inspect_ai.model import ChatMessageAssistant
+    from inspect_ai.tool import ToolCall
+
+    message = ChatMessageAssistant(content="", tool_calls=[ToolCall(id="1", function="next_board", arguments={})])
+    assert task.without_stray_args(message, {"next_board"}) == (message, [])
