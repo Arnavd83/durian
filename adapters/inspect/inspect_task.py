@@ -140,6 +140,8 @@ PROVIDER_PINS = {
     "openrouter/deepseek/": {"only": ["baidu"], "allow_fallbacks": False},
     # GLM has dozens of providers, many at fp4; Z.AI is its maker, at fp8.
     "openrouter/z-ai/": {"only": ["z-ai"], "allow_fallbacks": False},
+    # Kimi too: one run spread over Parasail (fp4), Together and Modal. Moonshot AI is its maker.
+    "openrouter/moonshotai/": {"only": ["moonshotai"], "allow_fallbacks": False},
 }
 
 

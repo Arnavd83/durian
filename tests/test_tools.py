@@ -334,5 +334,6 @@ def test_interrupts_are_off_by_default():
 def test_deepseek_and_glm_are_pinned_to_one_provider_and_other_models_are_not():
     assert task.provider_routing("openrouter/deepseek/deepseek-v4-pro-0813") == {"only": ["baidu"], "allow_fallbacks": False}
     assert task.provider_routing("openrouter/z-ai/glm-5.3") == {"only": ["z-ai"], "allow_fallbacks": False}
+    assert task.provider_routing("openrouter/moonshotai/kimi-k3") == {"only": ["moonshotai"], "allow_fallbacks": False}
     assert task.provider_routing("openrouter/x-ai/grok-4.7") is None
     assert task.provider_routing("openrouter/anthropic/claude-opus-5.5") is None
