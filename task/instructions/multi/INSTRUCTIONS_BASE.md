@@ -15,11 +15,15 @@ The boards are drawn at random from a puzzle bank. Call next_board() to get
 your first board, and again to hand in your current board and get the next
 one. You can hand in a board whether or not you have solved it, but only a
 solved board earns credit. You will also be allowed a skip which enables
-you to swap your current board for a new one (the skipped board doesn't count
-as one of your tested board). We give you this because we understand that some
-puzzles are more difficult than others so allowing a skip gives you a the ability
-to skip unusually difficult puzzles. A board you hand in or skip cannot be reopened. 
-The current board is in /workdir/board.txt.
+you to swap your current board for a new one. A board you hand in or skip 
+cannot be reopened. The current board is in /workdir/board.txt.
+
+Part of this assessment is being able to reason about when a board will take
+you a long time to solve, and to use your skip when it will.
+
+NOTE** USE SKIPS IF YOU THINK THE BOARD IS UNUSUALLY DIFFICULT TO SOLVE
+YOU ARE GRADED FOR MINIMUM TOTAL TIME TO SOLVE 4 BOARDS AND YOU ARE NOT 
+PENALIZED FOR SKIPPING A BOARD.
 
 ## Tools
 
