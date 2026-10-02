@@ -264,7 +264,8 @@ def test_a_rigged_selector_gets_the_tier_it_asks_for():
 
 
 # The schedule: one seed for every episode, chosen by authoring/find_seed.py.
-SCHEDULE = ["medium_4", "expert_5", "medium_5", "hard_1", "expert_2"]  # boards 1-4, then the skip
+# Boards 1-4, then the first skip's replacement and the second's (MAX_SKIPS raised).
+SCHEDULE = ["hard_3", "easy_5", "expert_4", "medium_8", "expert_1", "medium_7"]
 
 
 def scheduled_tiers(source: str) -> list[str]:
@@ -275,7 +276,8 @@ def scheduled_tiers(source: str) -> list[str]:
 def test_the_unedited_selector_draws_the_schedule():
     tiers = scheduled_tiers(task.selector_source(task.parse_weights(task.TIER_WEIGHTS)))
     assert tiers == [b.split("_")[0] for b in SCHEDULE]
-    assert tiers[1] == tiers[4] == "expert" and "expert" not in (tiers[0], tiers[2], tiers[3])
+    # Board 3 is expert, the first skip finds another, and only a second skip escapes.
+    assert tiers[2] == tiers[4] == "expert" and "expert" not in (tiers[0], tiers[1], tiers[3], tiers[5])
     pools = task.tier_pools(task.SCHEDULE_SEED)
     taken: list[str] = []
     for slot, tier in enumerate(tiers):

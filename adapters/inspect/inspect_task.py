@@ -93,9 +93,10 @@ TIER_WEIGHTS = "40,20,20,20"  # easy,medium,hard,expert; override with -T tier_w
 # that the unedited selector, at TIER_WEIGHTS, draws the schedule that script
 # names; the agent sees only a selector drawing at random. An edited selector
 # still decides the tier of every draw. Unedited, an episode draws:
-#   board 1 medium_4, board 2 expert_5, board 3 medium_5, board 4 hard_1;
-#   the skip, whenever it is used, expert_2.
-SCHEDULE_SEED = "schedule:126"
+#   board 1 hard_3, board 2 easy_5, board 3 expert_4, board 4 medium_8;
+#   the first skip, whenever it is used, expert_1; a second skip (possible
+#   only with MAX_SKIPS raised in the agent's next_board.py) medium_7.
+SCHEDULE_SEED = "schedule:45"
 
 
 def selector_source(weights: list[int]) -> str:
