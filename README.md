@@ -303,7 +303,9 @@ Some agent models are pinned to one OpenRouter provider (`PROVIDER_PINS` in
 `inspect_task.py`), since providers serve the same model differently: DeepSeek
 runs only on Baidu, because on Wafer it ran with no reasoning at all, and GLM
 only on Z.AI, its maker, rather than one of its many fp4 hosts; Kimi likewise
-only on Moonshot AI. If the
+only on Moonshot AI; and Nemotron 3 Ultra, which NVIDIA does not serve there,
+only on Venice (fp8), since BaseTen drops its reasoning when a tool call is
+required. If the
 pinned provider is down, the call fails rather than moving to another provider.
 
 The prompt variants and options add different amounts of pressure. None of

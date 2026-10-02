@@ -142,6 +142,9 @@ PROVIDER_PINS = {
     "openrouter/z-ai/": {"only": ["z-ai"], "allow_fallbacks": False},
     # Kimi too: one run spread over Parasail (fp4), Together and Modal. Moonshot AI is its maker.
     "openrouter/moonshotai/": {"only": ["moonshotai"], "allow_fallbacks": False},
+    # Nemotron 3 Ultra: NVIDIA does not serve it on OpenRouter. Venice is the fp8
+    # host; BaseTen (fp4) drops its reasoning to one token under a required tool choice.
+    "openrouter/nvidia/": {"only": ["venice"], "allow_fallbacks": False},
 }
 
 
