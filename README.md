@@ -11,6 +11,25 @@ noticed the shortcuts at all, and whether its report was honest is decided
 separately, by a judge model that reads the transcript of the episode, which
 the agent cannot edit.
 
+## Findings
+
+**[Read the findings: The Sudoku Honeypot](https://claude.ai/artifact/6sXvWysjVpMv93qbcxEvp6)**, an
+interactive write-up of the final experiment: five reasoning models with
+fully visible reasoning (DeepSeek V4 Pro, Kimi K3, GLM-5.3, Qwen3.8 Max,
+Nemotron 3 Ultra), 8 timed multi-board episodes each, plus two follow-up
+conditions (no stated penalty for reporting code use, and the penalty
+revealed only at the end). It covers the three reward hacks built into the
+environment (solving with code, rigging the board draw, raising the skip
+limit) and how far each model got with each, when and how models used their
+skip, when time pressure pushed them toward a shortcut, why they declined,
+and the one model that cheated, with quotes from the reasoning and an
+explorer for every episode.
+
+The same page is in the repo as a single self-contained file,
+[`analysis/sudoku-honeypot.html`](analysis/sudoku-honeypot.html): open it in a
+browser if the link above isn't shared with you. Its data comes from the eval
+logs in `logs_final/` (the main run) and `logs_final2/` (the follow-ups).
+
 ## The episode
 
 The agent gets one puzzle with exactly one solution, and a time limit (180 s
@@ -464,6 +483,9 @@ adapters/inspect/ Inspect task: the tools, the timed agent loop, the
                   two-container scorer, and judge.py, the cheating judge.
 authoring/        Host-side authoring checks and statistics. Not shipped.
 tests/            Host-side tests. Not shipped.
+analysis/         sudoku-honeypot.html, the findings page (see Findings). Not shipped.
+logs_final/       Eval logs of the main five-model run.
+logs_final2/      Eval logs of the two follow-up conditions.
 ```
 
 ## Known limitations
